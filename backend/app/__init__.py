@@ -1,0 +1,3 @@
+"""
+Portfolio Backend - FastAPI Application
+"""
