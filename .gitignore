@@ -9,11 +9,11 @@ __pycache__/
 *.egg-info/
 *.egg
 
-# Environment
+# Environment variables (sensitive data)
 .env
 .env.local
 .env*.local
-*.env
+backend/.env
 
 # Build outputs
 .next/
@@ -46,3 +46,6 @@ htmlcov/
 # Misc
 *.bak
 *.tmp
+
+# Keep JSON data files (they should be committed)
+!backend/data/*.json

@@ -1,5 +1,6 @@
 """
 FastAPI Main Application Entry Point
+Backend API for AI/Chat functionality only
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,7 +9,6 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
 from app.config import get_settings
-from app.api.routes import chat, projects, blog
 
 # Initialize settings
 settings = get_settings()
@@ -19,7 +19,7 @@ limiter = Limiter(key_func=get_remote_address)
 # Create FastAPI app
 app = FastAPI(
     title="Portfolio API",
-    description="Backend API for my personal portfolio with AI chatbot",
+    description="Backend API for AI chat functionality",
     version="1.0.0",
     docs_url="/docs" if settings.debug else None,
     redoc_url="/redoc" if settings.debug else None,
@@ -38,10 +38,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
-app.include_router(chat.router, prefix="/api/chat", tags=["Chat"])
-app.include_router(projects.router, prefix="/api/projects", tags=["Projects"])
-app.include_router(blog.router, prefix="/api/blog", tags=["Blog"])
+# TODO: Add chat/AI routes here when ready
+# from app.api.routes import chat
+# app.include_router(chat.router, prefix="/api", tags=["Chat"])
 
 
 @app.get("/")
@@ -56,8 +55,6 @@ async def health_check():
     return {
         "status": "healthy",
         "services": {
-            "api": "up",
-            "database": "pending_check",
-            "ai": "pending_check"
+            "api": "up"
         }
     }

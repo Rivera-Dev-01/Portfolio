@@ -22,11 +22,11 @@ This style combines the polish of corporate tech with the structure and depth of
 - **Content-First**: Typography is the main design element.
 - **Monochrome Palette**: Rely on shades of black, gray, and white. No loud accent colors.
 - **Data-Dense**: Information is presented compactly (tables, lists, badges).
--**Glassmorphism Design for the Header. Lets also apply that continues with scrolls as well. For card layouts we will use, Lets also implement glassmorphism and 3D look
+- **Glassmorphism** Design for the Header. Lets also apply that continues with scrolls as well. For card layouts we will use, Lets also implement glassmorphism and 3D look
 - **Interactive Documentation**: The portfolio feels like reading a well-crafted README or API doc.
 
 ### Key Visual Elements
-- **Lets Add A Header that refers only to a sections.
+- **Lets Add A Header that refers only to a sections.**
 - **Scroll-Based Experience**: Logical flow from Hero to content.
 - **Subtle Grids**: Faint background grids to suggest precision.
 - **Technical Badges**: Small, pill-shaped tags for skills/tech stack.
@@ -84,7 +84,8 @@ The entire experience is a single vertical scroll. No sticky headers obstructing
 │         [View Detailed Tech Stack ->] (New Page)    │
 │                                                     │
 ├─────── (Divider) ───────────────────────────────────┤
-│  Talk to my AI                                      │
+│  Talk to my AI  **This a side button not occupying a whole section. 
+it should follow when user scrolls                                    │
 │  ┌───────────────────────────────────────────┐     │
 │  │  "Ask me about my experience..."          │     │
 │  │  [ Chat Input... ]                        │     │
