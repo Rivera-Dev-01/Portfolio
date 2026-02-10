@@ -1,0 +1,14 @@
+[
+    {
+        "title": "HackTheFlood 2025",
+        "date": "December 6, 2025",
+        "image": "/gallery/Hackathons.jpg",
+        "featured": true
+    },
+    {
+        "title": "AWS Cloud Club Community Night",
+        "date": "January 26, 2026",
+        "image": "/gallery/AWS-Community-Night.jpg",
+        "featured": true
+    }
+]

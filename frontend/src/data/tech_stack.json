@@ -1,0 +1,18 @@
+[
+    {
+        "key": "frontend",
+        "value": "React, Tailwind, Next.js, TypeScript"
+    },
+    {
+        "key": "backend",
+        "value": "Python (FastAPI,Flask), Java OOP, PostgreSQL, SQL Server, SqLite"
+    },
+    {
+        "key": "AI/ML",
+        "value": "Llama 3 (via Groq), LangChain, HuggingFace"
+    },
+    {
+        "key": "Cloud/DevOps",
+        "value": "Docker, Git, AWS, Google Colab"
+    }
+]
