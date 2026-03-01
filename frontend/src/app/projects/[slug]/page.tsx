@@ -9,7 +9,7 @@ import { CodeSnippet } from '@/components/projects/CodeSnippet';
 import { APIDocumentation } from '@/components/projects/APIDocumentation';
 import { MetricsGrid } from '@/components/projects/MetricsGrid';
 import { TechStackSection } from '@/components/projects/TechStackSection';
-import ArchitectureGraph from '@/components/ArchitectureGraph';
+import ProjectArchitectureGraph from '@/components/projects/ProjectArchitectureGraph';
 
 interface ProjectPageProps {
     params: Promise<{ slug: string }>;
@@ -94,7 +94,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
                 {/* Interactive Architecture Graph */}
                 <div className="w-full h-[600px] rounded-2xl border border-white/10 bg-black/40 overflow-hidden mb-12">
-                    <ArchitectureGraph />
+                    <ProjectArchitectureGraph projectSlug={project.slug} />
                 </div>
 
                 {/* Data Pipeline */}

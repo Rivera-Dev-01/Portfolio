@@ -1180,5 +1180,462 @@ async def process_building_code(pdf_path: str, document_name: str):
             completed: '2026-02',
             status: 'maintained'
         }
+    },
+
+    {
+        slug: 'care-cures',
+        title: 'Care Cures',
+        tagline: 'Philippine Health Information System',
+        description: 'A comprehensive bilingual health information platform providing detailed information about the 20 priority diseases in the Philippines. Features full English and Tagalog language support with real-time translation switching for accessible public health education.',
+        heroImage: '/project_thumbnail/CareCures.png',
+        category: 'fullstack',
+
+        context: {
+            why: 'I wanted to make critical health information accessible to all Filipinos, regardless of their language preference. Many health resources are only available in English, creating a barrier for Tagalog speakers who need to understand serious medical conditions.',
+            who: 'Filipino citizens seeking health information. Patients and families learning about diseases. Healthcare workers needing quick reference materials. Communities with limited access to medical resources.',
+            problem: 'Health information about priority diseases is scattered and often only in English. No centralized platform for the 20 most critical diseases in the Philippines. Language barriers prevent many Filipinos from understanding their health conditions. Difficult to find reliable, structured medical information.',
+            solution: 'Built a bilingual platform with comprehensive information on 20 priority diseases including symptoms, causes, prevention, and treatment. Implemented instant language switching between English and Tagalog. Created a clean, accessible UI with search and category filters for easy navigation.'
+        },
+
+        stats: [
+            { label: 'Priority Diseases', value: '20', icon: 'heart-pulse' },
+            { label: 'Languages', value: '2', icon: 'languages' },
+            { label: 'Disease Categories', value: '5', icon: 'folder' },
+            { label: 'Response Time', value: '<1s', icon: 'zap' }
+        ],
+
+        architecture: {
+            diagram: '/projects/care-cures/architecture.svg',
+            description: 'Care Cures uses Next.js 15 with App Router for the frontend, Supabase for PostgreSQL database and real-time capabilities, and Python scripts in Google Colab for data ingestion. The language system uses React Context for global state management with localStorage persistence.',
+            components: [
+                {
+                    name: 'Disease Pages',
+                    description: 'Dynamic routes with detailed disease information and translations',
+                    tech: ['Next.js 15', 'TypeScript', 'React Server Components']
+                },
+                {
+                    name: 'Language System',
+                    description: 'Real-time language switching with Context API',
+                    tech: ['React Context', 'localStorage', 'TypeScript']
+                },
+                {
+                    name: 'Data Ingestion',
+                    description: 'Python scripts for parsing and uploading disease data',
+                    tech: ['Python', 'Google Colab', 'Supabase Client']
+                },
+                {
+                    name: 'Database',
+                    description: 'Dual-table structure for diseases and translations',
+                    tech: ['Supabase', 'PostgreSQL', 'Foreign Keys']
+                }
+            ]
+        },
+
+        technicalDetails: {
+            overview: 'Care Cures implements a sophisticated bilingual content system with separate tables for base content and translations. The platform uses React Context for instant language switching, shadcn/ui for accessible components, and Framer Motion for smooth animations. Data ingestion is handled through Python scripts that parse structured TXT files.',
+            challenges: [
+                'Managing bilingual content with consistent structure across languages',
+                'Parsing complex medical data from TXT files with varying formats',
+                'Ensuring medical accuracy in Tagalog translations',
+                'Creating an intuitive UI for non-technical users',
+                'Handling real-time language switching without page reloads'
+            ],
+            solutions: [
+                'Designed dual-table schema with diseases and diseases_translation tables',
+                'Built robust Python parsers handling pipe-separated and comma-separated data',
+                'Implemented fallback system showing English when Tagalog unavailable',
+                'Used shadcn/ui components with clear visual hierarchy and search',
+                'Leveraged React Context with localStorage for persistent language preference'
+            ]
+        },
+
+        codeExamples: [
+            {
+                title: 'Translation System with React Context',
+                description: 'Key-based translation system with localStorage persistence and fallback support',
+                language: 'typescript',
+                code: `"use client";
+
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+
+type Language = "en" | "tl";
+
+interface LanguageContextType {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: string) => string;
+}
+
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
+// Translation dictionary with 100+ keys
+const translations: Record<Language, Record<string, string>> = {
+  en: {
+    "nav.home": "Home",
+    "nav.diseases": "Diseases",
+    "home.title": "Understand Your Health",
+    "diseases.title": "Diseases & Conditions",
+    "disease.symptoms": "Symptoms to Watch For",
+    // ... 100+ more translation keys
+  },
+  tl: {
+    "nav.home": "Home",
+    "nav.diseases": "Mga Sakit",
+    "home.title": "Unawain ang Iyong Kalusugan",
+    "diseases.title": "Mga Sakit at Kondisyon",
+    "disease.symptoms": "Mga Sintomas na Dapat Bantayan",
+    // ... 100+ more translation keys
+  },
+};
+
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const [language, setLanguageState] = useState<Language>("en");
+
+  // Load saved language preference
+  useEffect(() => {
+    const saved = localStorage.getItem("language") as Language;
+    if (saved && (saved === "en" || saved === "tl")) {
+      setLanguageState(saved);
+    }
+  }, []);
+
+  // Persist language changes
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    localStorage.setItem("language", lang);
+  };
+
+  // Translation function with fallback
+  const t = (key: string): string => {
+    return translations[language][key] || key;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+}
+
+export function useLanguage() {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error("useLanguage must be used within LanguageProvider");
+  }
+  return context;
+}
+
+// Usage in components:
+// const { language, setLanguage, t } = useLanguage();
+// <h1>{t("home.title")}</h1>`
+            },
+            {
+                title: 'Bilingual Data Fetching',
+                description: 'Fetch disease data with automatic translation support',
+                language: 'typescript',
+                code: `import { createClient } from '@/lib/supabase';
+
+export async function getDisease(slug: string, language: 'en' | 'tl' = 'en') {
+  const supabase = createClient();
+
+  // Fetch base disease data
+  const { data: disease, error } = await supabase
+    .from('diseases')
+    .select('*')
+    .eq('slug', slug)
+    .single();
+
+  if (error || !disease) {
+    return null;
+  }
+
+  // Fetch translation if Tagalog requested
+  if (language === 'tl') {
+    const { data: translation } = await supabase
+      .from('diseases_translation')
+      .select('*')
+      .eq('disease_id', disease.id)
+      .eq('language_code', 'tl')
+      .single();
+
+    // Merge translation with base data
+    if (translation) {
+      return {
+        ...disease,
+        name: translation.name || disease.name,
+        description: translation.description || disease.description,
+        symptoms: translation.symptoms || disease.symptoms,
+        causes: translation.causes || disease.causes,
+        prevention: translation.prevention || disease.prevention,
+        treatment: translation.treatment || disease.treatment,
+        when_to_see_doctor: translation.when_to_see_doctor || disease.when_to_see_doctor,
+        affected_groups: translation.affected_groups || disease.affected_groups,
+      };
+    }
+  }
+
+  return disease;
+}
+
+export async function getAllDiseases(language: 'en' | 'tl' = 'en') {
+  const supabase = createClient();
+
+  const { data: diseases, error } = await supabase
+    .from('diseases')
+    .select('*')
+    .order('name');
+
+  if (error || !diseases) {
+    return [];
+  }
+
+  // Fetch all translations if Tagalog
+  if (language === 'tl') {
+    const { data: translations } = await supabase
+      .from('diseases_translation')
+      .select('*')
+      .eq('language_code', 'tl');
+
+    // Map translations to diseases
+    return diseases.map(disease => {
+      const translation = translations?.find(t => t.disease_id === disease.id);
+      return translation ? { ...disease, ...translation } : disease;
+    });
+  }
+
+  return diseases;
+}`
+            },
+            {
+                title: 'Python TXT Parser with Multi-line Support',
+                description: 'Robust parser handling multi-line values and pipe-separated arrays',
+                language: 'python',
+                code: `def parse_disease_txt(content: str) -> Dict:
+    """
+    Parse TXT block into dictionary
+    Handles multi-line values and array fields (pipe-separated)
+    """
+    data = {}
+    current_key = None
+    current_value = []
+    lines = content.split('\\n')
+    
+    for line in lines:
+        line = line.strip()
+        
+        # Skip empty lines and separators
+        if not line or line.startswith('=') or line.startswith('DISEASE #'):
+            continue
+        
+        # Check if this is a new key:value pair
+        if ':' in line and not line.startswith(' '):
+            # Save previous key if exists
+            if current_key:
+                value_str = ' '.join(current_value).strip()
+                
+                # Handle array fields (pipe-separated)
+                if current_key in ['symptoms', 'causes', 'prevention', 'treatment']:
+                    data[current_key] = [
+                        item.strip() 
+                        for item in value_str.split('|') 
+                        if item.strip()
+                    ]
+                    print(f"      ✓ Parsed {current_key}: {len(data[current_key])} items")
+                else:
+                    data[current_key] = value_str
+            
+            # Start new key
+            parts = line.split(':', 1)
+            current_key = parts[0].strip().lower()
+            current_value = [parts[1].strip()] if len(parts) > 1 else []
+        else:
+            # Continuation of previous value (multi-line)
+            if current_key:
+                current_value.append(line)
+    
+    # Don't forget the last key
+    if current_key:
+        value_str = ' '.join(current_value).strip()
+        if current_key in ['symptoms', 'causes', 'prevention', 'treatment']:
+            data[current_key] = [
+                item.strip() 
+                for item in value_str.split('|') 
+                if item.strip()
+            ]
+            print(f"      ✓ Parsed {current_key}: {len(data[current_key])} items")
+        else:
+            data[current_key] = value_str
+    
+    return data
+
+def ingest_diseases(file_content: str, supabase_url: str, supabase_key: str):
+    """Process and upload disease data to Supabase"""
+    supabase = create_client(supabase_url, supabase_key)
+    
+    # Split by disease separator
+    disease_blocks = file_content.split('================')
+    diseases = []
+    
+    for i, block in enumerate(disease_blocks, 1):
+        if not block.strip():
+            continue
+        
+        print(f"\\n📋 Processing Disease #{i}")
+        disease = parse_disease_txt(block)
+        
+        # Generate slug
+        if 'name' in disease:
+            disease['slug'] = disease['name'].lower()
+            disease['slug'] = re.sub(r'[^a-z0-9]+', '-', disease['slug'])
+            disease['slug'] = disease['slug'].strip('-')
+            
+            diseases.append(disease)
+            print(f"   ✅ Parsed: {disease['name']}")
+    
+    # Upload to Supabase
+    print(f"\\n🚀 Uploading {len(diseases)} diseases to Supabase...")
+    
+    for disease in diseases:
+        try:
+            response = supabase.table('diseases').insert(disease).execute()
+            print(f"   ✓ Uploaded: {disease['name']}")
+        except Exception as e:
+            print(f"   ✗ Error: {disease['name']} - {str(e)}")
+    
+    print(f"\\n✅ Ingestion complete! Total: {len(diseases)} diseases")`
+            }
+        ],
+
+        apiDocs: {
+            baseUrl: 'https://care-cures.vercel.app',
+            endpoints: [
+                {
+                    method: 'GET',
+                    path: '/api/diseases',
+                    description: 'Get all diseases with optional language parameter',
+                    parameters: [
+                        {
+                            name: 'language',
+                            type: 'string',
+                            required: false,
+                            description: 'Language code: en or tl (default: en)'
+                        },
+                        {
+                            name: 'category',
+                            type: 'string',
+                            required: false,
+                            description: 'Filter by disease category'
+                        }
+                    ],
+                    responseExample: `{
+  "diseases": [
+    {
+      "id": "uuid",
+      "name": "Ischemic Heart Disease",
+      "slug": "ischemic-heart-disease",
+      "category": "Cardiovascular",
+      "symptoms": ["Chest pain", "Shortness of breath"],
+      "severity": "High"
+    }
+  ]
+}`
+                },
+                {
+                    method: 'GET',
+                    path: '/api/diseases/[slug]',
+                    description: 'Get detailed information for a specific disease',
+                    parameters: [
+                        {
+                            name: 'slug',
+                            type: 'string',
+                            required: true,
+                            description: 'Disease slug identifier'
+                        },
+                        {
+                            name: 'language',
+                            type: 'string',
+                            required: false,
+                            description: 'Language code: en or tl'
+                        }
+                    ],
+                    responseExample: `{
+  "id": "uuid",
+  "name": "Diabetes Mellitus",
+  "description": "A chronic condition...",
+  "symptoms": ["Increased thirst", "Frequent urination"],
+  "causes": ["Genetic factors", "Lifestyle"],
+  "prevention": ["Healthy diet", "Regular exercise"],
+  "treatment": ["Insulin therapy", "Medication"],
+  "when_to_see_doctor": "If symptoms persist...",
+  "affected_groups": ["Adults over 40", "Obese individuals"]
+}`
+                }
+            ]
+        },
+
+        techStack: [
+            {
+                category: 'Frontend',
+                technologies: [
+                    { name: 'Next.js 15', purpose: 'React framework with App Router' },
+                    { name: 'TypeScript', purpose: 'Type-safe development' },
+                    { name: 'Tailwind CSS', purpose: 'Utility-first styling' },
+                    { name: 'shadcn/ui', purpose: 'Accessible UI components' },
+                    { name: 'Framer Motion', purpose: 'Smooth animations' },
+                    { name: 'Lucide Icons', purpose: 'Icon library' }
+                ]
+            },
+            {
+                category: 'Backend',
+                technologies: [
+                    { name: 'Supabase', purpose: 'PostgreSQL database and real-time' },
+                    { name: 'PostgreSQL', purpose: 'Relational database' },
+                    { name: 'Python', purpose: 'Data ingestion scripts' },
+                    { name: 'Google Colab', purpose: 'Script execution environment' }
+                ]
+            },
+            {
+                category: 'Data Management',
+                technologies: [
+                    { name: 'TXT Parsing', purpose: 'Structured data extraction' },
+                    { name: 'Supabase Client', purpose: 'Database operations' },
+                    { name: 'Foreign Keys', purpose: 'Relational integrity' }
+                ]
+            }
+        ],
+
+        performance: [
+            {
+                metric: 'Priority Diseases',
+                value: '20',
+                description: 'Comprehensive coverage of Philippines health priorities'
+            },
+            {
+                metric: 'Language Support',
+                value: '100%',
+                description: 'Full bilingual support for all disease information'
+            },
+            {
+                metric: 'Page Load',
+                value: '<1s',
+                description: 'Fast loading with Next.js optimization'
+            },
+            {
+                metric: 'Accessibility',
+                value: 'WCAG 2.1',
+                description: 'Built with shadcn/ui accessible components'
+            }
+        ],
+
+        links: {
+            github: 'https://github.com/Rivera-Dev/care-cures',
+            demo: 'https://care-cures.vercel.app'
+        },
+
+        timeline: {
+            started: '2026-02',
+            completed: '2026-02',
+            status: 'maintained'
+        }
     }
 ];

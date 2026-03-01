@@ -5,6 +5,7 @@ import { Parallax3DCard, DepthLayer } from '@/components/ui/Parallax3DCard';
 import { GalleryGrid } from '@/components/ui/GalleryGrid';
 import { ProjectTabs } from '@/components/projects/ProjectTabs';
 import { TerminalSection, TerminalPrompt } from '@/components/ui/TerminalSection';
+import { ContactForm } from '@/components/ContactForm';
 import Beams from '@/components/Beams';
 import {
   MapPin, GraduationCap, Cpu, ShieldCheck,
@@ -392,25 +393,7 @@ export default function Home() {
           {/* Left 60%: Contact Form */}
           <div className="md:w-[60%] glass-panel p-8 rounded-2xl">
             <h3 className="text-xl font-semibold mb-6">Send me a message</h3>
-            <form className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-xs font-mono text-zinc-400">NAME</label>
-                  <input type="text" className="w-full bg-black/50 border border-white/10 rounded p-2 focus:border-green-500 outline-none text-white" placeholder="John Doe" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-mono text-zinc-400">EMAIL</label>
-                  <input type="email" className="w-full bg-black/50 border border-white/10 rounded p-2 focus:border-green-500 outline-none text-white" placeholder="john@example.com" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs font-mono text-zinc-400">MESSAGE</label>
-                <textarea rows={5} className="w-full bg-black/50 border border-white/10 rounded p-2 focus:border-green-500 outline-none text-white" placeholder="Details about your inquiry..."></textarea>
-              </div>
-              <button type="submit" className="w-full bg-white text-black font-bold py-3 rounded hover:bg-zinc-200 transition-colors">
-                SEND MESSAGE
-              </button>
-            </form>
+            <ContactForm />
           </div>
 
           {/* Right 40%: Socials */}

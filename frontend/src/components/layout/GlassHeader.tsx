@@ -20,6 +20,7 @@ export function GlassHeader() {
         { name: 'Home', href: '#hero' },
         { name: 'About', href: '#about' },
         { name: 'Work', href: '#work' },
+        { name: 'Experience', href: '#experience' },
         { name: 'Stack', href: '#stack' },
         { name: 'Gallery', href: '#gallery' },
         { name: 'Contact', href: '#contact' },
