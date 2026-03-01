@@ -10,5 +10,11 @@
         "date": "January 26, 2026",
         "image": "/gallery/AWS-Community-Night.jpg",
         "featured": true
+    },
+    {
+        "title": "University Week CSE Booth",
+        "date": "December 6, 2025",
+        "image": "/gallery/jpcs week.jpg",
+        "featured": true
     }
 ]

@@ -10,9 +10,25 @@
     {
         "title": "AWS Club Web Dev Lead",
         "company": "AWS Learning Club - JRU Ch",
-        "period": "January 17, 2026",
+        "period": "January 17, 2026 - Present",
         "role": "Team Lead",
         "description": "Leading a team to build official club website and infrastructure.",
+        "type": "Leadership"
+    },
+    {
+        "title": "Data Engineering Pilipinas Scholar",
+        "company": "Data Camp",
+        "period": "January 17, 2026 - Present",
+        "role": "Scholar",
+        "description": "Scholar Grantee for Data Camp Subscription. A online source for Data Engineering/Data Analyst and bunch of AI Learning.",
+        "type": "Leadership"
+    },
+    {
+        "title": "Work Flow PH Tech Community Member",
+        "company": "Work Flow PH",
+        "period": "February 24, 2026 - Present",
+        "role": "Tech Member",
+        "description": "Tech member in charge of building AI and Automation powered systems that will power the organization and communities.",
         "type": "Leadership"
     }
 ]
