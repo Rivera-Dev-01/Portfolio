@@ -52,17 +52,27 @@ export async function getProfile(): Promise<ProfileData | null> {
 export async function sendChatMessage(
     request: ChatMessageRequest
 ): Promise<ChatMessageResponse> {
-    const response = await fetch(`${API_BASE_URL}/chat`, {
+    // Use Next.js API route instead of external backend
+    const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(request),
+        body: JSON.stringify({
+            message: request.message,
+            conversationHistory: request.context || [],
+        }),
     });
 
     if (!response.ok) {
-        throw new Error('Failed to send message');
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to send message');
     }
 
-    return await response.json();
+    const data = await response.json();
+    
+    return {
+        message: data.reply,
+        conversation_id: request.conversation_id || 'default',
+    };
 }

@@ -10,16 +10,8 @@ export function FloatingChat() {
     return (
         <div className="fixed bottom-8 right-8 z-50 flex flex-col items-end gap-4">
             {isOpen && (
-                <div className="w-[350px] sm:w-[400px] h-[500px] glass-panel rounded-2xl overflow-hidden shadow-2xl animate-in slide-in-from-bottom-10 fade-in duration-300 border border-white/10">
-                    <div className="h-full flex flex-col bg-black/40 backdrop-blur-xl">
-                        <div className="p-3 border-b border-white/5 flex justify-between items-center bg-black/40">
-                            <span className="text-sm font-semibold pl-2">Portfolio Assistant</span>
-                            <button onClick={() => setIsOpen(false)} className="text-muted-foreground hover:text-white text-xs uppercase tracking-wider">Close</button>
-                        </div>
-                        <div className="flex-1 overflow-hidden">
-                            <ChatInterface />
-                        </div>
-                    </div>
+                <div className="w-[420px] h-[600px] rounded-2xl overflow-hidden shadow-2xl animate-in slide-in-from-bottom-10 fade-in duration-300 border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
+                    <ChatInterface />
                 </div>
             )}
 
